@@ -1,7 +1,7 @@
 from utils_function import load_brainwaves, save_brainwaves
 from scipy import signal
 
-data = load_brainwaves("/home/gianluca/Programmazione/Progetti/BCI/data/raw/AcquiredBrainWave_2022-01-05_21-47-11.csv")
+data = load_brainwaves("/home/gianluca/Programmazione/Progetti/BCI/data/raw/AcquiredBrainWave_2022-01-10_07-03-02_Alzati.csv")
 
 period = 4.0  # Total period of time of the detected signal
 sample_rate = 250.0  # Samples rate in Hz
@@ -22,5 +22,5 @@ high_filtered = signal.filtfilt(high_filtered_b, high_filtered_a, low_filtered)
 notch_filtered_b, notch_filtered_a = signal.iirnotch(frequency_notch, 30.0, sample_rate)
 notch_filtered = signal.filtfilt(notch_filtered_b, notch_filtered_a, high_filtered)
 
-save_brainwaves("/home/gianluca/Programmazione/Progetti/BCI/data/processed/AcquiredBrainWave_2022-01-05_21-47-11.csv",
+save_brainwaves("/home/gianluca/Programmazione/Progetti/BCI/data/processed/AcquiredBrainWave_2022-01-10_07-03-02_Alzati.csv",
                 notch_filtered)
