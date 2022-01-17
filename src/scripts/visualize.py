@@ -1,7 +1,7 @@
-from utils_function import load_brainwaves
 import matplotlib.pyplot as plt
 
-data = load_brainwaves("/home/gianluca/Programmazione/Progetti/BCI/data/processed/AcquiredBrainWave_2022-01-10_07-03-02_Alzati.csv")
+data = [float(e) for e in open("/home/gianluca/Programmazione/Progetti/BCI/data/processed/"
+                               "15-Jan-2022T12:24:56.478956_1_L.csv").readlines()]
 
 plt.plot(data)
 plt.show()
