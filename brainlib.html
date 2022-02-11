@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module brainlib</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>brainlib</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gianluca/Programmazione/Progetti/BCI/src/brainlib/brainlib.py">/home/gianluca/Programmazione/Progetti/BCI/src/brainlib/brainlib.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="scipy.signal.html">scipy.signal</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-filter"><strong>filter</strong></a>(data: numpy.ndarray, sample_rate: float = 250.0, cutoff_low: float = 5.0, cutoff_high: float = 0.4, frequency_notch: float = 50.0) -&gt; numpy.ndarray</dt><dd><tt>Filters&nbsp;the&nbsp;signal&nbsp;passed&nbsp;as&nbsp;parameter&nbsp;in&nbsp;data&nbsp;and&nbsp;returns&nbsp;the&nbsp;filtered&nbsp;signal.<br>
+Applied&nbsp;filters&nbsp;are&nbsp;high&nbsp;pass,&nbsp;low&nbsp;pass&nbsp;and&nbsp;notch&nbsp;filter.<br>
+&nbsp;<br>
+Keyword&nbsp;arguments:<br>
+data&nbsp;--&nbsp;the&nbsp;input&nbsp;signal&nbsp;to&nbsp;filter.&nbsp;Must&nbsp;be&nbsp;a&nbsp;1&nbsp;dimensional&nbsp;array&nbsp;of&nbsp;values.&nbsp;Also&nbsp;numpy&nbsp;array&nbsp;are&nbsp;accepted<br>
+sample_rate&nbsp;--&nbsp;rate&nbsp;in&nbsp;Hz&nbsp;of&nbsp;the&nbsp;signal&nbsp;&nbsp;(default&nbsp;250.0)<br>
+cutoff_low&nbsp;--&nbsp;the&nbsp;cutoff&nbsp;of&nbsp;the&nbsp;low&nbsp;pass&nbsp;filter.&nbsp;The&nbsp;smaller,&nbsp;the&nbsp;more&nbsp;aggressive&nbsp;is&nbsp;the&nbsp;filter&nbsp;(default&nbsp;5.0)<br>
+cutoff_high&nbsp;--&nbsp;the&nbsp;cutoff&nbsp;of&nbsp;the&nbsp;high&nbsp;pass&nbsp;filter.&nbsp;The&nbsp;smaller,&nbsp;the&nbsp;more&nbsp;aggressive&nbsp;is&nbsp;the&nbsp;filter&nbsp;(default&nbsp;0.4)<br>
+frequency_notch&nbsp;--&nbsp;the&nbsp;frequency&nbsp;in&nbsp;Hz&nbsp;to&nbsp;cut&nbsp;from&nbsp;the&nbsp;signal&nbsp;with&nbsp;the&nbsp;notch&nbsp;filter&nbsp;(default&nbsp;frequency_notch&nbsp;50.0)<br>
+&nbsp;<br>
+Returns:<br>
+1&nbsp;dimensional&nbsp;numpy&nbsp;array&nbsp;with&nbsp;the&nbsp;filtered&nbsp;values&nbsp;of&nbsp;the&nbsp;signal</tt></dd></dl>
+ <dl><dt><a name="-recognize"><strong>recognize</strong></a>(data: numpy.ndarray, sample: numpy.ndarray, seconds: float = 2.0, sample_rate: float = 250.0) -&gt; numpy.ndarray</dt><dd><tt>Function&nbsp;used&nbsp;to&nbsp;cross-correlate&nbsp;two&nbsp;signal&nbsp;and&nbsp;finding&nbsp;the&nbsp;peaks&nbsp;of&nbsp;the&nbsp;correlated&nbsp;signal&nbsp;so&nbsp;that&nbsp;it&nbsp;should&nbsp;recognize&nbsp;if&nbsp;the&nbsp;second&nbsp;signal&nbsp;is&nbsp;in&nbsp;the&nbsp;first<br>
+&nbsp;<br>
+Keyword&nbsp;Arguments:&nbsp;<br>
+data&nbsp;--&nbsp;the&nbsp;main&nbsp;signal,&nbsp;in&nbsp;which&nbsp;to&nbsp;find&nbsp;the&nbsp;signal&nbsp;contained&nbsp;in&nbsp;sample.&nbsp;Must&nbsp;be&nbsp;1&nbsp;dimensional&nbsp;array&nbsp;of&nbsp;numbers<br>
+sample&nbsp;--&nbsp;the&nbsp;sample&nbsp;of&nbsp;the&nbsp;signal&nbsp;to&nbsp;recognize&nbsp;in&nbsp;the&nbsp;first&nbsp;signal.&nbsp;Must&nbsp;be&nbsp;1&nbsp;dimensional&nbsp;array&nbsp;of&nbsp;numbers<br>
+seconds&nbsp;--&nbsp;the&nbsp;duration&nbsp;in&nbsp;seconds&nbsp;of&nbsp;the&nbsp;main&nbsp;signal&nbsp;(default&nbsp;2.0)<br>
+sample_rate&nbsp;--&nbsp;the&nbsp;number&nbsp;of&nbsp;samples&nbsp;for&nbsp;second&nbsp;in&nbsp;the&nbsp;main&nbsp;signal.&nbsp;In&nbsp;Hz&nbsp;(default&nbsp;250.0)<br>
+&nbsp;<br>
+Returns:<br>
+tuple&nbsp;with&nbsp;an&nbsp;array&nbsp;of&nbsp;all&nbsp;the&nbsp;recognized&nbsp;peaks&nbsp;as&nbsp;first&nbsp;element&nbsp;and&nbsp;numpy&nbsp;array&nbsp;with&nbsp;the&nbsp;cross-correlated&nbsp;signals&nbsp;as&nbsp;second&nbsp;element</tt></dd></dl>
+</td></tr></table>
+</body></html>
