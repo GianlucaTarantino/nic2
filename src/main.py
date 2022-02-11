@@ -69,6 +69,6 @@ while 1:
         print("Closed", end='\r')
         move_arm = False
     else:
-        print("Still", end='\r')
+        print("Still ", end='\r')
 
     print('\r', end='')
