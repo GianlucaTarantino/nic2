@@ -2,7 +2,7 @@ import time
 import serial
 import pydobot
 import numpy as np
-from brainlib.brainlib import is_float, filter, recognize
+from brainlib.brainlib import is_float, filter, correlate_peaks
 
 MODE_DEBUG = True
 
@@ -17,13 +17,15 @@ move_arm = True
 
 # Configuration variables
 max_signal_length = 5000
-mean_sensibility = 0.0
+mean_sensibility = 0.005
 
 # Importing samples file
-open_arm_sample = np.array([float(e) for e in open("/home/gianluca/Programmazione/Progetti/BCI/data/samples/"
-                                                        "sample_arm_in.csv").readlines()])
-closed_arm_sample = np.array([float(e) for e in open("/home/gianluca/Programmazione/Progetti/BCI/data/samples/"
-                                                        "sample_arm_out.csv").readlines()])
+samples = (
+    np.array([float(e) for e in open("data/interim_samples/arm_open_sample_1.csv").readlines()]),
+    np.array([float(e) for e in open("data/interim_samples/arm_close_sample_1.csv").readlines()]),
+    np.array([float(e) for e in open("data/interim_samples/arm_open_sample_2.csv").readlines()]),
+    np.array([float(e) for e in open("data/interim_samples/arm_open_sample_3.csv").readlines()]),
+)
 
 while 1:
     
@@ -38,7 +40,8 @@ while 1:
     current_signal.append(float(serial_value))
 
     # Cutting the signal if too long to save memory
-    if len(current_signal) < 500:
+    if len(current_signal) < 1000:
+        print("Wait", end='\r')
         continue
     elif len(current_signal) > 5000:
         current_signal = current_signal[2500:]
@@ -48,27 +51,18 @@ while 1:
 
     # Checking if the mean value of the last second of the signal is outside the sensibility range. If so, something has been detected.
     if -mean_sensibility < np.mean(filtered_signal[-250:]) < mean_sensibility:
-        print(np.mean(filtered_signal[-250:]), end='\r')
+        print("Still | "+str(np.mean(filtered_signal[-250:])), end='\r')
         continue
 
-    # Applying cross correlation to the current signal with every available sample and getting the recognized peaks and the correlated signal.
-    recognized_open_arm, correlated_open_arm = recognize(filtered_signal, open_arm_sample)
-    recognized_closed_arm, correlated_closed_arm = recognize(filtered_signal, closed_arm_sample)
-    
-    # Moving the robotic arm if connected and if a movement is ongoing
-    if move_arm and not MODE_DEBUG:
-        (x, y, z, r, j1, j2, j3, j4) = arm.pose()
-        arm.move_to(x - 3, y - 10, z, r)
+    most_similar, _ = correlate_peaks(filtered_signal[:500], samples)
 
-    # Checking if there are recognized peaks in the last second of the signal and if the mean value of the correlated signal \
-    # with a sample is bigger of all the other correlations
-    if [e for e in recognized_open_arm if e >= len(current_signal)-250] and np.mean(correlated_open_arm[-250:]) >= np.mean(correlated_closed_arm[-250:]):
-        print("Opened", end='\r')
+    if most_similar == None:
+        print("Still | "+str(np.mean(filtered_signal[-250:])), end='\r')
+    elif most_similar % 2 == 0:
+        print("Opened | "+str(np.mean(filtered_signal[-250:])), end='\r')
         move_arm = True
-    elif [e for e in recognized_closed_arm if e >= len(current_signal)-250] and np.mean(correlated_closed_arm[-250:]) >= np.mean(correlated_open_arm[-250:]):
-        print("Closed", end='\r')
+    elif most_similar % 2 == 1:
+        print("Closed | "+str(np.mean(filtered_signal[-250:])), end='\r')
         move_arm = False
-    else:
-        print("Still ", end='\r')
 
     print('\r', end='')
