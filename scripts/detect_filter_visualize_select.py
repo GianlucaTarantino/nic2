@@ -1,5 +1,6 @@
 from fileinput import filename
 import time
+import numpy as np
 import serial
 from datetime import datetime
 import matplotlib.pyplot as plt
@@ -16,7 +17,7 @@ def isfloat(element) -> bool:
 ser = serial.Serial('/dev/ttyACM0', 115200)
 
 # Configuration variables
-relevation_time = 10 # time in seconds of the relevation
+relevation_time = 30 # time in seconds of the relevation
 
 # Utils variables
 y = [] # storing all the detected values
@@ -33,7 +34,7 @@ while time.time()-now <= relevation_time:
     
     # Getting value from serial and printing it
     value = ser.readline()
-    print(value, " | ", time.time()-now, end='\r')
+    print(value, " | ", time.time()-now, " | ", len(y), end='\r')
     
     # Skipping if the value isn't valid
     if not isfloat(value) or (float(value) > 2 or float(value) < -2):
