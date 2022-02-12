@@ -72,7 +72,7 @@ user_value = input("Want to save detection? (Y/n) ").strip()
 if user_value == "" or user_value.upper() == "Y":
 
     # Saving raw and filtered file with timestamp and asking user for the file classification string
-    file_name = f"{input('Insert file classification: ')}_{datetime.now().strftime('%d-%b-%YT%H:%M:%S.%f')}.csv"
+    file_name = f"{input('Insert file classification: ')}_{datetime.now().strftime('%d-%b-%YT%H:%M:%S:%f')}.csv"
     open("/home/gianluca/Programmazione/Progetti/BCI/data/raw/" + file_name, "w").write(
             "\n".join([str(e) for e in y]))
     open("/home/gianluca/Programmazione/Progetti/BCI/data/processed/" + file_name, "w").write(

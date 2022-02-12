@@ -40,5 +40,5 @@ while time.time()-now <= relevation_time:
     y.append(float(value))
 
 # Saving file with timestamp and asking user for the file classification string
-open(f"/home/gianluca/Programmazione/Progetti/BCI/data/raw/{input('Insert file classification: ')}_{datetime.now().strftime('%d-%b-%YT%H:%M:%S.%f')}.csv", "w").write("\n".join([str(e) for e in y]))
+open(f"/home/gianluca/Programmazione/Progetti/BCI/data/raw/{input('Insert file classification: ')}_{datetime.now().strftime('%d-%b-%YT%H:%M:%S:%f')}.csv", "w").write("\n".join([str(e) for e in y]))
 
