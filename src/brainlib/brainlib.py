@@ -46,43 +46,40 @@ def filter(data: np.ndarray, sample_rate: float = 250.0, cutoff_low: float = 5.0
 
     return notch_filtered
 
-def recognize(data: np.ndarray, sample: np.ndarray, seconds: float = 2.0, sample_rate: float = 250.0) -> np.ndarray:
+def correlate_peaks(data: np.ndarray, samples: np.ndarray) -> list:
 
     """
-    Function used to cross-correlate two signal and finding the peaks of the correlated signal so that it should recognize if the second signal is in the first
+    Function used to cross-correlate two signal and to find the peaks charateristics of the correlated signal.
+    It takes multiple samples, and returns the index of the most similar sample found in the signal.
+    To do this, it compares the highest peaks prominence and width for each sample and returns the index of the peak
+    that has the highest prominence (width, if equal).
 
     Keyword Arguments: 
     data -- the main signal, in which to find the signal contained in sample. Must be 1 dimensional array of numbers
-    sample -- the sample of the signal to recognize in the first signal. Must be 1 dimensional array of numbers
-    seconds -- the duration in seconds of the main signal (default 2.0)
-    sample_rate -- the number of samples for second in the main signal. In Hz (default 250.0)
+    samples -- the array with all the samples, of which will be returned the index of the most similar sample
     
     Returns:
-    tuple with an array of all the recognized peaks as first element and numpy array with the cross-correlated signals as second element
+    tuple, with as first element the index of the most similar sample and as second element the properties used for each sample
     """
 
-    # Array for the peaks that are recognized to be from a movement
-    recognized = []
+    samples_props = []
 
-    # Cross-correlating signal with the sample and getting the peaks
-    correlated = signal.correlate(data, sample, mode="same", method="fft")
-    correlated_peaks, _ = signal.find_peaks(correlated, distance=10)
+    for sample in samples:
+        correlated = signal.correlate(data, sample, mode="same", method="fft")
+        correlated_peaks, _ = signal.find_peaks(correlated, prominence=0.01)
 
-    # Getting only peaks of the correlation that are in a zone that has a mean value bigger than the normal mean value of the signal of the same
-    for p in correlated_peaks:
-        if np.mean(correlated[max(0, p-10):min(len(data), p+10)]) > np.mean(data[max(0, p-10):min(len(data), p+10)])+0.02:
-            recognized.append(p)
+        if len(correlated_peaks) == 0:
+            continue
 
-    # Getting the highest peak for each second
-    for s in range(1, seconds + 1):
-        max_peak_s = -np.inf
-        max_peak_i = -1
-        for i in range(sample_rate*(s-1), sample_rate*s):
-            if i in recognized and correlated[i] > max_peak_s:
-                max_peak_s = correlated[i]
-                max_peak_i = i
-        for i in range(sample_rate * (s - 1), sample_rate * s):
-            if i in recognized and i != max_peak_i:
-                recognized.pop(recognized.index(i))
+        correlated_peaks_width = signal.peak_widths(correlated, correlated_peaks)[0]
+        correlated_peaks_prominence = signal.peak_prominences(correlated, correlated_peaks)[0]
+
+        max_prominence = round(max(correlated_peaks_prominence), 2)
+        max_prominence_index = np.where(correlated_peaks_prominence == max_prominence)
+        samples_props.append((max_prominence, correlated_peaks_width[max_prominence_index], len(correlated_peaks), len(samples_props)))
     
-    return (recognized, correlated)
+    if len(samples_props) == 0:
+        return None, ()
+        
+    most_similar = sorted(samples_props)[0]
+    return most_similar[3], samples_props
