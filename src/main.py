@@ -40,7 +40,7 @@ while 1:
     current_signal.append(float(serial_value))
 
     # Cutting the signal if too long to save memory
-    if len(current_signal) < 1000:
+    if len(current_signal) < 2000:
         print("Wait", end='\r')
         continue
     elif len(current_signal) > 5000:
@@ -58,10 +58,10 @@ while 1:
 
     if most_similar == None:
         print("Still | "+str(np.mean(filtered_signal[-250:])), end='\r')
-    elif most_similar % 2 == 0:
+    elif most_similar in [0, 2, 3]:
         print("Opened | "+str(np.mean(filtered_signal[-250:])), end='\r')
         move_arm = True
-    elif most_similar % 2 == 1:
+    elif most_similar in [1]:
         print("Closed | "+str(np.mean(filtered_signal[-250:])), end='\r')
         move_arm = False
 
