@@ -12,17 +12,18 @@ def is_float(element: str) -> bool:
     except ValueError:
         return False
 
-def filter(data: np.ndarray, sample_rate: float = 250.0, cutoff_low: float = 5.0, cutoff_high: float = 0.4, frequency_notch: float = 50.0) -> np.ndarray:
+def filter(data: np.ndarray, sample_rate: float = 250.0, cutoff_low: float = 15.0, cutoff_high: float = 0.35, frequency_notch: float = 50.0) -> np.ndarray:
 
     """
     Filters the signal passed as parameter in data and returns the filtered signal.
-    Applied filters are high pass, low pass and notch filter.
+    Applied filters are high pass (to remove all frequencies over a certain threshold), 
+    low pass (to remove all frequencies over a certain threshold) and notch (to remove the frequency of the specified value) filter.
 
     Keyword arguments:
     data -- the input signal to filter. Must be a 1 dimensional array of values. Also numpy array are accepted
     sample_rate -- rate in Hz of the signal  (default 250.0)
-    cutoff_low -- the cutoff of the low pass filter. The smaller, the more aggressive is the filter (default 5.0)
-    cutoff_high -- the cutoff of the high pass filter. The smaller, the more aggressive is the filter (default 0.4)
+    cutoff_low -- the cutoff frequency of the low pass filter. All frequencies over this value are removed (default 15.0)
+    cutoff_high -- the cutoff frequency of the high pass filter. All frequencies under this value are removed (default 0.35)
     frequency_notch -- the frequency in Hz to cut from the signal with the notch filter (default frequency_notch 50.0)
     
     Returns:
