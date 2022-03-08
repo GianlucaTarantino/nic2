@@ -21,10 +21,7 @@ mean_sensibility = 0.005
 
 # Importing samples file
 samples = (
-    np.array([float(e) for e in open("data/interim_samples/arm_open_sample_1.csv").readlines()]),
-    np.array([float(e) for e in open("data/interim_samples/arm_close_sample_1.csv").readlines()]),
-    np.array([float(e) for e in open("data/interim_samples/arm_open_sample_2.csv").readlines()]),
-    np.array([float(e) for e in open("data/interim_samples/arm_open_sample_3.csv").readlines()]),
+    np.array([float(e) for e in open("data/samples/arm_open_sample.csv").readlines()]),
 )
 
 while 1:
@@ -54,15 +51,10 @@ while 1:
         print("Still | "+str(np.mean(filtered_signal[-250:])), end='\r')
         continue
 
-    most_similar, _ = correlate_peaks(filtered_signal[:500], samples)
+    similar_samples = correlate_peaks(filtered_signal[:500], samples)
 
-    if most_similar == None:
-        print("Still | "+str(np.mean(filtered_signal[-250:])), end='\r')
-    elif most_similar in [0, 2, 3]:
-        print("Opened | "+str(np.mean(filtered_signal[-250:])), end='\r')
-        move_arm = True
-    elif most_similar in [1]:
-        print("Closed | "+str(np.mean(filtered_signal[-250:])), end='\r')
-        move_arm = False
+    for sample in similar_samples:
+        if sample == 1:
+            print("Move right | "+str(np.mean(filtered_signal[-250:])), end='\r')
 
     print('\r', end='')
