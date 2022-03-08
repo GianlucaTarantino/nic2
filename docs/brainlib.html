@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>brainlib</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gianluca/Programmazione/Progetti/BCI/src/brainlib/brainlib.py">/home/gianluca/Programmazione/Progetti/BCI/src/brainlib/brainlib.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/gianluca/Programmazione/Progetti/bci/src/brainlib/brainlib.py">/home/gianluca/Programmazione/Progetti/bci/src/brainlib/brainlib.py</a></font></td></tr></table>
     <p></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -26,27 +26,30 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-filter"><strong>filter</strong></a>(data: numpy.ndarray, sample_rate: float = 250.0, cutoff_low: float = 5.0, cutoff_high: float = 0.4, frequency_notch: float = 50.0) -&gt; numpy.ndarray</dt><dd><tt>Filters&nbsp;the&nbsp;signal&nbsp;passed&nbsp;as&nbsp;parameter&nbsp;in&nbsp;data&nbsp;and&nbsp;returns&nbsp;the&nbsp;filtered&nbsp;signal.<br>
-Applied&nbsp;filters&nbsp;are&nbsp;high&nbsp;pass,&nbsp;low&nbsp;pass&nbsp;and&nbsp;notch&nbsp;filter.<br>
+<td width="100%"><dl><dt><a name="-correlate_peaks"><strong>correlate_peaks</strong></a>(data: numpy.ndarray, samples: numpy.ndarray) -&gt; list</dt><dd><tt>Function&nbsp;used&nbsp;to&nbsp;cross-correlate&nbsp;two&nbsp;signals&nbsp;and&nbsp;to&nbsp;find&nbsp;the&nbsp;peak&nbsp;characteristics&nbsp;of&nbsp;the&nbsp;correlated&nbsp;signal.&nbsp;<br>
+It&nbsp;takes&nbsp;multiple&nbsp;samples,&nbsp;and&nbsp;returns&nbsp;a&nbsp;list&nbsp;of&nbsp;indexes&nbsp;of&nbsp;recognized&nbsp;signals.<br>
+It&nbsp;recognizes&nbsp;a&nbsp;signal&nbsp;based&nbsp;on&nbsp;the&nbsp;prominence&nbsp;of&nbsp;the&nbsp;peak&nbsp;(that&nbsp;has&nbsp;to&nbsp;be&nbsp;a&nbsp;minimum&nbsp;of&nbsp;0.65)&nbsp;and&nbsp;the&nbsp;<br>
+width&nbsp;of&nbsp;the&nbsp;peak&nbsp;(that&nbsp;has&nbsp;to&nbsp;be&nbsp;a&nbsp;maximum&nbsp;of&nbsp;140)<br>
+&nbsp;<br>
+Keyword&nbsp;Arguments:&nbsp;<br>
+data&nbsp;--&nbsp;the&nbsp;main&nbsp;signal,&nbsp;in&nbsp;which&nbsp;to&nbsp;find&nbsp;the&nbsp;signal&nbsp;contained&nbsp;in&nbsp;sample.&nbsp;Must&nbsp;be&nbsp;1&nbsp;dimensional&nbsp;array&nbsp;of&nbsp;numbers<br>
+samples&nbsp;--&nbsp;the&nbsp;array&nbsp;with&nbsp;all&nbsp;the&nbsp;samples,&nbsp;of&nbsp;which&nbsp;will&nbsp;be&nbsp;returned&nbsp;the&nbsp;index&nbsp;of&nbsp;the&nbsp;most&nbsp;similar&nbsp;sample<br>
+&nbsp;<br>
+Returns:<br>
+list&nbsp;with&nbsp;indexes&nbsp;of&nbsp;recognized&nbsp;peaks</tt></dd></dl>
+ <dl><dt><a name="-filter"><strong>filter</strong></a>(data: numpy.ndarray, sample_rate: float = 250.0, cutoff_low: float = 15.0, cutoff_high: float = 0.35, frequency_notch: float = 50.0) -&gt; numpy.ndarray</dt><dd><tt>Filters&nbsp;the&nbsp;signal&nbsp;passed&nbsp;as&nbsp;parameter&nbsp;in&nbsp;data&nbsp;and&nbsp;returns&nbsp;the&nbsp;filtered&nbsp;signal.<br>
+Applied&nbsp;filters&nbsp;are&nbsp;high&nbsp;pass&nbsp;(to&nbsp;remove&nbsp;all&nbsp;frequencies&nbsp;over&nbsp;a&nbsp;certain&nbsp;threshold),&nbsp;<br>
+low&nbsp;pass&nbsp;(to&nbsp;remove&nbsp;all&nbsp;frequencies&nbsp;over&nbsp;a&nbsp;certain&nbsp;threshold)&nbsp;and&nbsp;notch&nbsp;(to&nbsp;remove&nbsp;the&nbsp;frequency&nbsp;of&nbsp;the&nbsp;specified&nbsp;value)&nbsp;filter.<br>
 &nbsp;<br>
 Keyword&nbsp;arguments:<br>
 data&nbsp;--&nbsp;the&nbsp;input&nbsp;signal&nbsp;to&nbsp;filter.&nbsp;Must&nbsp;be&nbsp;a&nbsp;1&nbsp;dimensional&nbsp;array&nbsp;of&nbsp;values.&nbsp;Also&nbsp;numpy&nbsp;array&nbsp;are&nbsp;accepted<br>
 sample_rate&nbsp;--&nbsp;rate&nbsp;in&nbsp;Hz&nbsp;of&nbsp;the&nbsp;signal&nbsp;&nbsp;(default&nbsp;250.0)<br>
-cutoff_low&nbsp;--&nbsp;the&nbsp;cutoff&nbsp;of&nbsp;the&nbsp;low&nbsp;pass&nbsp;filter.&nbsp;The&nbsp;smaller,&nbsp;the&nbsp;more&nbsp;aggressive&nbsp;is&nbsp;the&nbsp;filter&nbsp;(default&nbsp;5.0)<br>
-cutoff_high&nbsp;--&nbsp;the&nbsp;cutoff&nbsp;of&nbsp;the&nbsp;high&nbsp;pass&nbsp;filter.&nbsp;The&nbsp;smaller,&nbsp;the&nbsp;more&nbsp;aggressive&nbsp;is&nbsp;the&nbsp;filter&nbsp;(default&nbsp;0.4)<br>
+cutoff_low&nbsp;--&nbsp;the&nbsp;cutoff&nbsp;frequency&nbsp;of&nbsp;the&nbsp;low&nbsp;pass&nbsp;filter.&nbsp;All&nbsp;frequencies&nbsp;over&nbsp;this&nbsp;value&nbsp;are&nbsp;removed&nbsp;(default&nbsp;15.0)<br>
+cutoff_high&nbsp;--&nbsp;the&nbsp;cutoff&nbsp;frequency&nbsp;of&nbsp;the&nbsp;high&nbsp;pass&nbsp;filter.&nbsp;All&nbsp;frequencies&nbsp;under&nbsp;this&nbsp;value&nbsp;are&nbsp;removed&nbsp;(default&nbsp;0.35)<br>
 frequency_notch&nbsp;--&nbsp;the&nbsp;frequency&nbsp;in&nbsp;Hz&nbsp;to&nbsp;cut&nbsp;from&nbsp;the&nbsp;signal&nbsp;with&nbsp;the&nbsp;notch&nbsp;filter&nbsp;(default&nbsp;frequency_notch&nbsp;50.0)<br>
 &nbsp;<br>
 Returns:<br>
 1&nbsp;dimensional&nbsp;numpy&nbsp;array&nbsp;with&nbsp;the&nbsp;filtered&nbsp;values&nbsp;of&nbsp;the&nbsp;signal</tt></dd></dl>
- <dl><dt><a name="-recognize"><strong>recognize</strong></a>(data: numpy.ndarray, sample: numpy.ndarray, seconds: float = 2.0, sample_rate: float = 250.0) -&gt; numpy.ndarray</dt><dd><tt>Function&nbsp;used&nbsp;to&nbsp;cross-correlate&nbsp;two&nbsp;signal&nbsp;and&nbsp;finding&nbsp;the&nbsp;peaks&nbsp;of&nbsp;the&nbsp;correlated&nbsp;signal&nbsp;so&nbsp;that&nbsp;it&nbsp;should&nbsp;recognize&nbsp;if&nbsp;the&nbsp;second&nbsp;signal&nbsp;is&nbsp;in&nbsp;the&nbsp;first<br>
-&nbsp;<br>
-Keyword&nbsp;Arguments:&nbsp;<br>
-data&nbsp;--&nbsp;the&nbsp;main&nbsp;signal,&nbsp;in&nbsp;which&nbsp;to&nbsp;find&nbsp;the&nbsp;signal&nbsp;contained&nbsp;in&nbsp;sample.&nbsp;Must&nbsp;be&nbsp;1&nbsp;dimensional&nbsp;array&nbsp;of&nbsp;numbers<br>
-sample&nbsp;--&nbsp;the&nbsp;sample&nbsp;of&nbsp;the&nbsp;signal&nbsp;to&nbsp;recognize&nbsp;in&nbsp;the&nbsp;first&nbsp;signal.&nbsp;Must&nbsp;be&nbsp;1&nbsp;dimensional&nbsp;array&nbsp;of&nbsp;numbers<br>
-seconds&nbsp;--&nbsp;the&nbsp;duration&nbsp;in&nbsp;seconds&nbsp;of&nbsp;the&nbsp;main&nbsp;signal&nbsp;(default&nbsp;2.0)<br>
-sample_rate&nbsp;--&nbsp;the&nbsp;number&nbsp;of&nbsp;samples&nbsp;for&nbsp;second&nbsp;in&nbsp;the&nbsp;main&nbsp;signal.&nbsp;In&nbsp;Hz&nbsp;(default&nbsp;250.0)<br>
-&nbsp;<br>
-Returns:<br>
-tuple&nbsp;with&nbsp;an&nbsp;array&nbsp;of&nbsp;all&nbsp;the&nbsp;recognized&nbsp;peaks&nbsp;as&nbsp;first&nbsp;element&nbsp;and&nbsp;numpy&nbsp;array&nbsp;with&nbsp;the&nbsp;cross-correlated&nbsp;signals&nbsp;as&nbsp;second&nbsp;element</tt></dd></dl>
+ <dl><dt><a name="-is_float"><strong>is_float</strong></a>(element: str) -&gt; bool</dt></dl>
 </td></tr></table>
 </body></html>
