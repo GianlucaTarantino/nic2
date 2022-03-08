@@ -4,9 +4,9 @@ from scipy import signal
 
 # Paths of signal and sample data
 data_file_name = "15-Jan-2022T12:39:43.778054_3_T.csv"
-data_file_path = "/home/gianluca/Programmazione/Progetti/BCI/data/processed/" + data_file_name
+data_file_path = "data/processed/" + data_file_name
 sample_file_name = "15-Jan-2022T12:30:19.608124_3_L_sample_1.csv"
-sample_file_path = "/home/gianluca/Programmazione/Progetti/BCI/data/samples/" + sample_file_name
+sample_file_path = "data/samples/" + sample_file_name
 
 # Getting signal and sample data as numpy arrays
 data = np.array([float(e) for e in open(data_file_path).readlines()])
@@ -14,7 +14,8 @@ sample = np.array([float(e) for e in open(sample_file_path).readlines()])
 
 # Cross-correlating signal with the sample and getting the peaks
 correlated = signal.correlate(data, sample, mode="same", method="fft")
-correlated_peaks, _ = signal.find_peaks(data, distance=10)
+correlated = (correlated-min(correlated))/(max(correlated)-min(correlated))
+correlated_peaks, _ = signal.find_peaks(correlated, distance=10)
 
 # Array for the peaks that are recognized to be from a movement
 recognized = []

@@ -2,13 +2,13 @@ import numpy as np
 from scipy import signal
 
 file_name = input("Insert file name of the CSV to filter: ")
-file_path = "/home/gianluca/Programmazione/Progetti/BCI/data/raw/"+file_name
+file_path = "data/raw/"+file_name
 data = np.array([float(e) for e in open(file_path).readlines() if 5 > float(e) > -5])
 
 sample_rate = 250.0  # Samples rate in Hz
 nyq = 0.5 * sample_rate
 
-cutoff_low = 5  # Frequency of the low pass filter
+cutoff_low = 15.0  # Frequency of the low pass filter
 cutoff_high = 0.4  # Frequency of the high pass filter
 frequency_notch = 50  # Frequency of the notch filter
 
@@ -26,5 +26,4 @@ high_filtered = signal.filtfilt(high_filtered_b, high_filtered_a, low_filtered)
 notch_filtered_b, notch_filtered_a = signal.iirnotch(frequency_notch, 30.0, sample_rate)
 notch_filtered = signal.filtfilt(notch_filtered_b, notch_filtered_a, high_filtered)
 
-open("/home/gianluca/Programmazione/Progetti/BCI/data/processed/" + file_name, "w").write(
-        "\n".join(notch_filtered.astype("str")))
+open("data/processed/" + file_name, "w").write("\n".join(notch_filtered.astype("str")))
