@@ -76,10 +76,10 @@ def correlate_peaks(data: np.ndarray, samples: np.ndarray) -> list:
         # Normalize correlated signal
         correlated = (correlated-min(correlated))/(max(correlated)-min(correlated))
         # Get all peaks from correlated signal
-        correlated_peaks, _ = signal.find_peaks(correlated, prominence=0.65, width=(0, 140), rel_height=0.5)
+        correlated_peaks, _ = signal.find_peaks(correlated, prominence=0.84, width=(0, 109), rel_height=0.5)
 
         # If there is any peak with the above characteristics, then the peak is added to the array to return
-        if correlated_peaks:
+        if len(correlated_peaks) > 0:
             detected_samples.append(i)
     
     return detected_samples
