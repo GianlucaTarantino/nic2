@@ -1,5 +1,3 @@
-from pickletools import int4
-from re import S
 import time
 import serial
 import pydobot
