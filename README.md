@@ -35,12 +35,14 @@ The project has been developed with the following technologies:
 - Numpy
 - Scipy
 
-and an ADS1299 connected to an Arduino Mega that has been used to detect the brainwaves data.
+and an ADS1299 and a SEN-13723, both connected to an Arduino Mega that has been used to detect the EEG and EMG data.
 
-The data from the ADS1299-Arduino Mega are sent to the computer via USB serial communication, and read by the computer with the `serial` library in Python.\
-Then on the data are applied three filters: Low pass, High pass and Notch filter. Finally, cross-correlation is used to recognize where sample brain signals are in the detected values.
+The data from the Arduino Mega are sent to the computer via USB serial communication, and read by the computer with the `serial` library in Python.\
+Then on the EEG data are applied three filters: Low pass, High pass and Notch filter. Finally, cross-correlation is used to recognize where sample brain signals are in the detected values. To affine detection, cross-correlation is applied between the signal and various samples, to get which one is the most similar.
 
-To affine detection, cross-correlation is applied between the signal and various samples, to get which one is the most similar.
+EMG data are passed as is, since they are already parsed by the SEN-13723 as a value between 0 and 1023, that represents the muscle activity.
+
+These data can then be used to comand other robotics and computers in general.
 
 ## Contribute
 
