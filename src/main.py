@@ -4,22 +4,26 @@ import pydobot
 import numpy as np
 from brainlib.brainlib import is_float, filter, correlate_peaks
 
-DOBOT = False
+DOBOT = 0
+CAR = 1
 arm = 0
+car = 0
 
 # Serial devices configuration
-ser = serial.Serial('/dev/ttyACM0', 115200)
+ser = serial.Serial('COMX', 115200)
 if DOBOT:
-    arm = pydobot.Dobot("/dev/ttyUSB0")
+    arm = pydobot.Dobot("COMX")
     arm.suck(True)
     arm.grip(False)
+if CAR:
+    car = serial.Serial(port='COM7', baudrate=9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1.0)
 
 # Defining detection variables
 current_signal_l, current_signal_r = [], []
 move_arm = True
 grip = False
 last_grip = -1
-last_move = -1
+last_move = -1  
 brain_value_l, brain_value_r, eeg_value = 0.0, 0.0, 0
 
 # Configuration variables
@@ -86,7 +90,11 @@ while 1:
             last_move = time.time()
             if DOBOT:
                 (x, y, z, r, j1, j2, j3, j4) = arm.pose()
-                arm.move_to(x - 10, y - 40, z, r)
+                arm.move_to(x, y + 20, z, r)
+            if CAR:
+                car.write(b'3')
+                time.sleep(0.5)
+                car.write(b'1' if grip else b'0')
     # Recognized samples in the right signal
     for sample in similar_samples_r:
         if sample == 0 and time.time()-last_move > 1.5:
@@ -94,12 +102,18 @@ while 1:
             last_move = time.time()
             if DOBOT:
                 (x, y, z, r, j1, j2, j3, j4) = arm.pose()
-                arm.move_to(x - 10, y + 40, z, r)
-    
-    if eeg_value > 140 and time.time()-last_grip > 1.5:
+                arm.move_to(x, y - 20, z, r)
+            if CAR:
+                car.write(b'4')
+                time.sleep(0.5)
+                car.write(b'1' if grip else b'0')
+    if eeg_value > 130 and time.time()-last_grip > 1.5:
         print("Grip | "+str(eeg_value))
         grip = not grip
-        arm.grip(grip)
+        if DOBOT:
+            arm.grip(grip)
+        if CAR:
+            car.write(b'1' if grip else b'0')
         last_grip = time.time()
 
     print('\r', end='')

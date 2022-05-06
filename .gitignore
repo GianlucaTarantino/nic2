@@ -131,3 +131,4 @@ dmypy.json
 # Jetbrains IDE settings
 .idea
 .old
+.vscode
