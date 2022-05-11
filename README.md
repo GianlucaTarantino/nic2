@@ -1,7 +1,7 @@
 ![](https://i.ibb.co/fGKBbxy/NIC2-Banner-1.png)
 
 # NIC2
-NIC2 (Neural Interface for Control of Computers) is BCI project done by Gianluca Tarantino, from L.S. Amaldi in Italy, that partecipates to the Italian Olimpics of Robotics 2022.
+NIC2 (Neural Interface for Control of Computers) is a BCI project, programmed by Gianluca Tarantino, from L.S. Amaldi in Italy, that partecipates to the Italian Olimpics of Robotics 2022.
 
 - [Project Title](#project-title)
 - [Description](#description)
